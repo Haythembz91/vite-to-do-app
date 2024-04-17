@@ -1,6 +1,8 @@
 
 import ListHeader from "./components/ListHeader.jsx";
 import styled from "styled-components";
+import {useEffect, useState} from "react";
+import ListItem from './components/ListItem.jsx'
 
 const Container = styled.div`
     background-color: white;
@@ -11,11 +13,30 @@ const Container = styled.div`
     width: 50%;
 `
 
+
+
 console.log(new Date())
 const App =()=>{
+    const userEmail='ania@mail.com'
+    const [tasks,setTasks]=useState(null)
+
+    const getData = async ()=>{
+        try{
+            const response = await fetch(`http://localhost:8000/todos/${userEmail}`)
+            const json = await response.json()
+            setTasks(json)
+        }catch(err){console.error(err)}
+    }
+
+    useEffect(()=>{
+        getData()
+    },[])
+    console.log(tasks)
+    const sortedTasks = tasks?.sort((a,b)=>new Date(a.date)-new Date(b.date))
     return(
         <Container>
             <ListHeader listName={'⛱️ Holiday Tick List'}></ListHeader>
+            {sortedTasks?.map(task=><ListItem task={task}></ListItem>)}
         </Container>
     )
 }

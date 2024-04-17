@@ -7,19 +7,21 @@ app.use(cors())
 const pool = require('./db.js')
 
 app.get('/',(req,res)=>{
-
+    console.log(req.params)
     res.json('ANIA IS THE BEST')
 })
 
-app.get('/todos',async (req,res)=>{
+app.get('/todos/:userEmail',async (req,res)=>{
     try{
-        const userEmail = 'ania@test.com'
+        const {userEmail} = req.params
+        console.log(userEmail)
         const todos = await  pool.query('SELECT * FROM todos WHERE user_email=$1',[userEmail]);
         res.json(todos.rows)
     }catch (err){
         console.error(err)
     }
 })
+
 
 
 
