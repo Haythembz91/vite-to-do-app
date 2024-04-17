@@ -17,7 +17,7 @@ const Container = styled.div`
 
 console.log(new Date())
 const App =()=>{
-    const userEmail='ania@test.com'
+    const userEmail='ania@mail.com'
     const [tasks,setTasks]=useState(null)
 
     const getData = async ()=>{
@@ -31,12 +31,14 @@ const App =()=>{
     useEffect(()=>{
         getData()
     },[])
+
     console.log(tasks)
+
     const sortedTasks = tasks?.sort((a,b)=>new Date(a.date)-new Date(b.date))
     return(
         <Container>
-            <ListHeader listName={'⛱️ Holiday Tick List'}></ListHeader>
-            {sortedTasks?.map(task=><ol key={task.id}><ListItem key={task.id} task={task}></ListItem></ol>)}
+            <ListHeader getData={getData} listName={'⛱️ Holiday Tick List'}></ListHeader>
+            {sortedTasks?.map(task=><ol key={task.id}><ListItem getData={getData} key={task.id} task={task}></ListItem></ol>)}
         </Container>
     )
 }

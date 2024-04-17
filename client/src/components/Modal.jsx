@@ -48,16 +48,36 @@ const FormContainer=styled.div`
         margin: auto;
     }
 `
-const Modal = ({mode,setShowModal,task})=>{
+
+
+const Modal = ({mode,setShowModal,task,getData})=>{
     const editMode = mode==='edit'
     const [data,setData]=useState({
-        user_email:editMode? task.user_email:null,
-        title:editMode? task.title:null,
+        user_email:editMode? task.user_email:'ania@mail.com',
+        title:editMode? task.title:'',
         id:'',
         date:editMode?'':new Date(),
-        progress:editMode? task.progress:null
-
+        progress:editMode? task.progress:0
     })
+    const postData = async (e)=>{
+        e.preventDefault()
+        try{
+            const response = await fetch('http://localhost:8000/todos',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(data)
+            })
+            if(response.status===200){
+                console.log('Worked')
+                setShowModal(false)
+                getData()
+            }
+        }catch(err){
+            console.error(err)
+        }
+    }
+
+
     const handleChange=(e)=>{
         const {name,value}=e.target
         setData(d=>({
@@ -77,7 +97,7 @@ const Modal = ({mode,setShowModal,task})=>{
                     <input required maxLength={30} type={"text"} placeholder={'Your task goes here'} name={'title'} onChange={handleChange} value={data.title}></input>
                     <label htmlFor={'range'}>Drag to select your current progress</label>
                     <input type={"range"} id={'range'} min={0} max={100} name={'progress'} step={1} required={true} value={data.progress}  onChange={handleChange} />
-                    <input type={"submit"} value={mode==='create'?'ADD TASK':'EDIT TASK'}/>
+                    <input type={"submit"} value={mode==='create'?'ADD TASK':'EDIT TASK'} onClick={postData}/>
                 </FormContainer>
             </ModalBox>
         </Overlay>

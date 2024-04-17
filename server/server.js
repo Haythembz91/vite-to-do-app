@@ -4,7 +4,9 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 app.use(cors())
+app.use(express.json())
 const pool = require('./db.js')
+const {v4:uuidv4}=require('uuid')
 
 app.get('/',(req,res)=>{
     console.log(req.params)
@@ -22,6 +24,21 @@ app.get('/todos/:userEmail',async (req,res)=>{
     }
 })
 
+app.post('/todos',async (req,res)=>{
+    const {user_email,title,progress,date}=req.body
+    console.log(user_email,title,progress,date)
+    const id = uuidv4()
+    try{
+            const newTodo=await pool.query('INSERT INTO todos(id,user_email,title,progress,date) VALUES($1,$2,$3,$4,$5)',
+            [id,user_email,title,progress,date])
+            res.json(newTodo)
+    }catch(err){console.error(err)}
+
+
+
+
+
+})
 
 
 

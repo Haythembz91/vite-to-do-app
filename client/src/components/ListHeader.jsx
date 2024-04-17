@@ -47,7 +47,9 @@ const SignOutButton = styled.button`
         color: white;
     }  
 `
-const ListHeader = ({listName})=>{
+
+
+const ListHeader = ({listName,getData})=>{
 
     const [showModal,setShowModal]=useState(false)
     const mode = 'create'
@@ -59,7 +61,7 @@ const ListHeader = ({listName})=>{
                 <AddButton onClick={()=>setShowModal(true)}>ADD NEW</AddButton>
                 <SignOutButton>SIGN OUT</SignOutButton>
             </ButtonContainer>
-            {showModal && <Modal mode={mode} setShowModal={setShowModal}></Modal>}
+            {showModal && <Modal mode={mode} setShowModal={setShowModal} getData={getData}></Modal>}
         </Header>
     )
 }

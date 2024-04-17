@@ -42,7 +42,9 @@ const InfoContainer = styled.div`
     justify-content: space-between;
 `
 const TaskTitle=styled.p``
-const ListItem = ({task})=>{
+
+
+const ListItem = ({task,getData})=>{
     const [showModal,setShowModal]=useState(false)
     return(
         <TaskItem>
@@ -57,7 +59,7 @@ const ListItem = ({task})=>{
                 <EditButton onClick={()=>setShowModal(true)}>EDIT</EditButton>
                 <DeleteButton>DELETE</DeleteButton>
             </ButtonContainer>
-            {showModal && <Modal mode={'edit'} setShowModal={setShowModal} task={task}></Modal>}
+            {showModal && <Modal mode={'edit'} setShowModal={setShowModal} task={task} getData={getData}></Modal>}
         </TaskItem>
     )
 }
