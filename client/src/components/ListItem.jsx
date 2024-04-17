@@ -1,10 +1,64 @@
+import ProgressBar from './ProgressBar.jsx'
+import TickIcon from './TickIcon.jsx'
+import styled from "styled-components";
+import {ButtonContainer} from './ListHeader.jsx'
+import {useState} from "react";
+import Modal from './Modal.jsx'
 
+
+
+const EditButton = styled.button`
+    border: 1.5px solid rgb(141,181,145);
+    color: rgb(141,181,145);
+    &:hover{
+        background-color: rgb(182,223,186);
+    }
+    &:active{
+        color: white;
+        background-color:rgb(141,181,145) ;
+    }
+`
+const DeleteButton=styled.button`
+    border: 1.5px solid rgb(255,175,163);
+    color: rgb(255,175,163);
+    &:hover{
+        background-color: rgb(255,201,193);
+    }
+    &:active{
+        background-color:rgb(255,175,163) ;
+        color: white;
+    }
+`
+const TaskItem=styled.li`
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: rgba(0,0,0,0.08) 0 0 0 1px;
+    display: flex;
+    justify-content: space-between;
+`
+const InfoContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+const TaskTitle=styled.p``
 const ListItem = ({task})=>{
+    const [showModal,setShowModal]=useState(false)
     return(
-        <div>
-            <p>{task.title}</p>
-
-        </div>
+        <TaskItem>
+            <InfoContainer>
+                <TickIcon></TickIcon>
+                <TaskTitle>
+                    {task.title}
+                </TaskTitle>
+                <ProgressBar></ProgressBar>
+            </InfoContainer>
+            <ButtonContainer>
+                <EditButton onClick={()=>setShowModal(true)}>EDIT</EditButton>
+                <DeleteButton>DELETE</DeleteButton>
+            </ButtonContainer>
+            {showModal && <Modal mode={'edit'} setShowModal={setShowModal} task={task}></Modal>}
+        </TaskItem>
     )
 }
 

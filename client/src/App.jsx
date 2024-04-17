@@ -17,7 +17,7 @@ const Container = styled.div`
 
 console.log(new Date())
 const App =()=>{
-    const userEmail='ania@mail.com'
+    const userEmail='ania@test.com'
     const [tasks,setTasks]=useState(null)
 
     const getData = async ()=>{
@@ -36,7 +36,7 @@ const App =()=>{
     return(
         <Container>
             <ListHeader listName={'⛱️ Holiday Tick List'}></ListHeader>
-            {sortedTasks?.map(task=><ListItem task={task}></ListItem>)}
+            {sortedTasks?.map(task=><ol key={task.id}><ListItem key={task.id} task={task}></ListItem></ol>)}
         </Container>
     )
 }
