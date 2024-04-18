@@ -32,7 +32,7 @@ const FormTitleContainer=styled.div`
     display: flex;
     justify-content: space-between;
 `
-const FormContainer=styled.div`
+export const FormContainer=styled.div`
     display: flex;
     flex-direction: column;    
     label{
@@ -53,7 +53,7 @@ const FormContainer=styled.div`
 const Modal = ({mode,setShowModal,task,getData})=>{
     const editMode = mode==='edit'
     const [data,setData]=useState({
-        user_email:editMode? task.user_email:'ania@test.com',
+        user_email:editMode? task.user_email:'ania@mail.com',
         title:editMode? task.title:'',
         id:'',
         date:editMode?task.date:new Date(),

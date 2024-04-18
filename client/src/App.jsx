@@ -3,6 +3,7 @@ import ListHeader from "./components/ListHeader.jsx";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
 import ListItem from './components/ListItem.jsx'
+import Auth from './components/Auth.jsx'
 
 const Container = styled.div`
     background-color: white;
@@ -15,27 +16,30 @@ const Container = styled.div`
 
 
 const App =()=>{
-    const userEmail='ania@test.com'
+    const userEmail='ania@mail.com'
     const [tasks,setTasks]=useState(null)
-
+    const authToken = false
     const getData = async ()=>{
         try{
-            const response = await fetch(`http://localhost:8000/todos/${userEmail}`)
+            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${userEmail}`)
             const json = await response.json()
             setTasks(json)
         }catch(err){console.error(err)}
     }
 
     useEffect(()=>{
-        getData()
+        if (authToken){
+            getData()
+        }
     },[])
 
 
     const sortedTasks = tasks?.sort((a,b)=>new Date(a.date)-new Date(b.date))
     return(
         <Container>
-            <ListHeader getData={getData} listName={'⛱️ Holiday Tick List'}></ListHeader>
-            {sortedTasks?.map(task=><ol key={task.id}><ListItem getData={getData} key={task.id} task={task}></ListItem></ol>)}
+            {authToken && <><ListHeader getData={getData} listName={'⛱️ Holiday Tick List'}></ListHeader>
+            {sortedTasks?.map(task=><ol key={task.id}><ListItem getData={getData} key={task.id} task={task}></ListItem></ol>)}</>}
+            {!authToken && <Auth></Auth>}
         </Container>
     )
 }
