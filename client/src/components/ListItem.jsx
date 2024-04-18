@@ -45,6 +45,28 @@ const TaskTitle=styled.p``
 
 
 const ListItem = ({task,getData})=>{
+
+    const deleteTask = async ()=>{
+
+        try{
+            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${task.id}`,{
+                method:'DELETE',
+                headers:{'Content-Type':'application/json'},
+
+            })
+            if(response.status===200){
+                console.log('Deleted')
+                getData()
+            }
+        }catch(err){
+            console.log(err)
+        }
+
+    }
+
+
+
+
     const [showModal,setShowModal]=useState(false)
     return(
         <TaskItem>
@@ -57,7 +79,7 @@ const ListItem = ({task,getData})=>{
             </InfoContainer>
             <ButtonContainer>
                 <EditButton onClick={()=>setShowModal(true)}>EDIT</EditButton>
-                <DeleteButton>DELETE</DeleteButton>
+                <DeleteButton onClick={deleteTask}>DELETE</DeleteButton>
             </ButtonContainer>
             {showModal && <Modal mode={'edit'} setShowModal={setShowModal} task={task} getData={getData}></Modal>}
         </TaskItem>

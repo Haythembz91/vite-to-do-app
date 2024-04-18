@@ -14,10 +14,8 @@ const Container = styled.div`
 `
 
 
-
-console.log(new Date())
 const App =()=>{
-    const userEmail='ania@mail.com'
+    const userEmail='ania@test.com'
     const [tasks,setTasks]=useState(null)
 
     const getData = async ()=>{
@@ -32,7 +30,6 @@ const App =()=>{
         getData()
     },[])
 
-    console.log(tasks)
 
     const sortedTasks = tasks?.sort((a,b)=>new Date(a.date)-new Date(b.date))
     return(

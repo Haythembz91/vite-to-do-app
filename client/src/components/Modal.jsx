@@ -53,25 +53,43 @@ const FormContainer=styled.div`
 const Modal = ({mode,setShowModal,task,getData})=>{
     const editMode = mode==='edit'
     const [data,setData]=useState({
-        user_email:editMode? task.user_email:'ania@mail.com',
+        user_email:editMode? task.user_email:'ania@test.com',
         title:editMode? task.title:'',
         id:'',
-        date:editMode?'':new Date(),
+        date:editMode?task.date:new Date(),
         progress:editMode? task.progress:0
     })
     const postData = async (e)=>{
         e.preventDefault()
         try{
-            const response = await fetch('http://localhost:8000/todos',{
+            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos`,{
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
                 body:JSON.stringify(data)
             })
             if(response.status===200){
-                console.log('Worked')
+                console.log('Added')
                 setShowModal(false)
                 getData()
             }
+        }catch(err){
+            console.error(err)
+        }
+    }
+    const editData = async (e)=>{
+        e.preventDefault()
+        try{
+            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${task.id}`,{
+                method:'PUT',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(data)
+            })
+            if(response.status===200){
+                console.log('Edited')
+                setShowModal(false)
+                getData()
+            }
+
         }catch(err){
             console.error(err)
         }
@@ -84,7 +102,6 @@ const Modal = ({mode,setShowModal,task,getData})=>{
             ...d,
             [name]:value
         }))
-        console.log(data)
     }
     return(
         <Overlay>
@@ -97,7 +114,7 @@ const Modal = ({mode,setShowModal,task,getData})=>{
                     <input required maxLength={30} type={"text"} placeholder={'Your task goes here'} name={'title'} onChange={handleChange} value={data.title}></input>
                     <label htmlFor={'range'}>Drag to select your current progress</label>
                     <input type={"range"} id={'range'} min={0} max={100} name={'progress'} step={1} required={true} value={data.progress}  onChange={handleChange} />
-                    <input type={"submit"} value={mode==='create'?'ADD TASK':'EDIT TASK'} onClick={postData}/>
+                    <input type={"submit"} value={mode==='create'?'ADD TASK':'EDIT TASK'} onClick={mode==='create'?postData:editData}/>
                 </FormContainer>
             </ModalBox>
         </Overlay>
