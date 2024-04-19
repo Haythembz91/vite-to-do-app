@@ -87,9 +87,15 @@ app.post('/login',async (req,res)=>{
     }catch (err) {
         console.error(err)
     }
+})
 
-
-
+app.delete('/delete',async (req,res)=>{
+    const {email}=req.body
+    try{
+        const deleteUser = await pool.query('DELETE FROM users WHERE email=$1;',[email])
+        const deletetodos= await pool.query('DELETE FROM todos WHERE user_email=$1', [email])
+        res.json(deleteUser)
+    }catch(err){console.error(err)}
 })
 
 

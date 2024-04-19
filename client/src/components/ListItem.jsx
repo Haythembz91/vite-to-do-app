@@ -36,10 +36,12 @@ const TaskItem=styled.li`
     box-shadow: rgba(0,0,0,0.08) 0 0 0 1px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `
 const InfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `
 const TaskTitle=styled.p``
 
@@ -75,8 +77,8 @@ const ListItem = ({task,getData})=>{
                 <TaskTitle>
                     {task.title}
                 </TaskTitle>
-                <ProgressBar></ProgressBar>
             </InfoContainer>
+            <ProgressBar progress={task.progress}></ProgressBar>
             <ButtonContainer>
                 <EditButton onClick={()=>setShowModal(true)}>EDIT</EditButton>
                 <DeleteButton onClick={deleteTask}>DELETE</DeleteButton>

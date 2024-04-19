@@ -58,7 +58,7 @@ const Auth = ()=>{
             body: JSON.stringify({email,password})
         })
         const data = await response.json()
-        console.log(data)
+        
         if(data.detail){
             setError(data.detail)
         }else{
