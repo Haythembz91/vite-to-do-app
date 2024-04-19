@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import {FormContainer} from './Modal.jsx'
+import {useCookies} from "react-cookie";
+
+
 const AuthContainer = styled.div`
     dispay: flex;
     justify-content: center;
@@ -37,9 +40,34 @@ const Auth = ()=>{
     const [password,setPassword]=useState(null)
     const [confirmPassword,setConfirmPassword]=useState(null)
     const [error,setError]=useState(null)
+    const [cookies,setCookie,removeCookie] = useCookies(null)
+
     const viewLogin = (status)=>{
         setError(null)
         setIsLogIn(status)
+    }
+    const handleSubmit = async (e,endpoint)=>{
+        e.preventDefault()
+        if(!isLogIn && password!==confirmPassword){
+            setError("Passwords don't match")
+            return
+        }
+        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/${endpoint}`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({email,password})
+        })
+        const data = await response.json()
+        console.log(data)
+        if(data.detail){
+            setError(data.detail)
+        }else{
+            setCookie('Email',data.email)
+            setCookie('AuthToken',data.token)
+            window.location.reload()
+        }
+
+
     }
 
     return(
@@ -47,10 +75,10 @@ const Auth = ()=>{
             <AuthContainerBox>
                 <form action="">
                     <h2>{isLogIn?'Login':'Sign Up'}</h2>
-                    <input required={true} type="email" placeholder='email' />
-                    <input required={true} type="password" placeholder='password' />
-                    {!isLogIn && <input type="password" placeholder='confirm password' />}
-                    <input required={true} type="submit" value={isLogIn?'Login':'Sign Up'} />
+                    <input required={true} type="email" placeholder='email' onChange={(e)=>setEmail(e.target.value)} />
+                    <input required={true} type="password" placeholder='password' onChange={e=>setPassword(e.target.value)} />
+                    {!isLogIn && <input type="password" placeholder='confirm password' onChange={e=>setConfirmPassword(e.target.value)} />}
+                    <input type="submit" value={isLogIn?'Login':'Sign Up'} onClick={(e)=>handleSubmit(e,isLogIn?'login':'signup')} />
                     {error && <p>{error}</p>}
                 </form>
                 <AuthOptions>

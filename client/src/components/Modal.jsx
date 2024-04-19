@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {useState} from "react";
+import {useCookies} from "react-cookie";
 
 const Overlay = styled.div`
     position: absolute;
@@ -51,9 +52,11 @@ export const FormContainer=styled.div`
 
 
 const Modal = ({mode,setShowModal,task,getData})=>{
+
+    const [cookies,setCookies,removeCookies]=useCookies(null)
     const editMode = mode==='edit'
     const [data,setData]=useState({
-        user_email:editMode? task.user_email:'ania@mail.com',
+        user_email:editMode? task.user_email:cookies.Email,
         title:editMode? task.title:'',
         id:'',
         date:editMode?task.date:new Date(),

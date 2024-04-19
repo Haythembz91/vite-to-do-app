@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {useEffect, useState} from "react";
 import ListItem from './components/ListItem.jsx'
 import Auth from './components/Auth.jsx'
+import {useCookies} from "react-cookie";
 
 const Container = styled.div`
     background-color: white;
@@ -16,9 +17,10 @@ const Container = styled.div`
 
 
 const App =()=>{
-    const userEmail='ania@mail.com'
+    const [cookies,setCookie,removeCookie] = useCookies(null)
+    const userEmail=cookies.Email
     const [tasks,setTasks]=useState(null)
-    const authToken = false
+    const authToken = cookies.AuthToken
     const getData = async ()=>{
         try{
             const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${userEmail}`)

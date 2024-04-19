@@ -2,6 +2,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import Modal from './Modal.jsx'
+import {useCookies} from "react-cookie";
 
 
 const HeaderItem = styled.h1`
@@ -51,15 +52,21 @@ const SignOutButton = styled.button`
 
 const ListHeader = ({listName,getData})=>{
 
+    const [cookies,setCookie,removeCookie] = useCookies(null)
     const [showModal,setShowModal]=useState(false)
     const mode = 'create'
 
+    const handleSignOut =()=>{
+        removeCookie('Email')
+        removeCookie('AuthToken')
+        window.location.reload()
+    }
     return(
         <Header>
             <HeaderItem>{listName}</HeaderItem>
             <ButtonContainer>
                 <AddButton onClick={()=>setShowModal(true)}>ADD NEW</AddButton>
-                <SignOutButton>SIGN OUT</SignOutButton>
+                <SignOutButton onClick={()=>handleSignOut()}>SIGN OUT</SignOutButton>
             </ButtonContainer>
             {showModal && <Modal mode={mode} setShowModal={setShowModal} getData={getData}></Modal>}
         </Header>
