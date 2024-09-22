@@ -66,8 +66,6 @@ const Auth = ()=>{
             setCookie('AuthToken',data.token)
             window.location.reload()
         }
-
-
     }
 
     return(
