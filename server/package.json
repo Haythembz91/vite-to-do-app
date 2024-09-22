@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "deploy": "node server.js",
-    "build":"vite build"
+    "deploy": "node server.js"
   },
   "author": "",
   "license": "ISC",
